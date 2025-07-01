@@ -3,6 +3,7 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from shot import Shot
 import sys
 
 def main():
@@ -17,11 +18,13 @@ def main():
     updatables = pygame.sprite.Group()
     drawables = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
     # assign groups to containers
     Player.containers = updatables, drawables
     Asteroid.containers = asteroids, updatables, drawables
-    AsteroidField.containers = (updatables,)
+    AsteroidField.containers = updatables
+    Shot.containers = shots, updatables, drawables
 
     # create player (automatically added to groups)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -33,6 +36,9 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    player.shoot()
 
         # draw the background
         screen.fill((0, 0, 0))
