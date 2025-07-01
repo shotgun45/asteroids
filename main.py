@@ -27,7 +27,9 @@ def main():
     Shot.containers = shots, updatables, drawables
 
     # create player (automatically added to groups)
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    x = SCREEN_WIDTH / 2
+    y = SCREEN_HEIGHT / 2
+    player = Player(x, y)
 
     # create asteroid field
     asteroid_field = AsteroidField()
@@ -56,6 +58,13 @@ def main():
                 print("Game over!")
                 sys.exit()
 
+        # check for collisions between asteroids and shots
+        for asteroid in asteroids:
+            for shot in shots:
+                if asteroid.collides_with(shot):
+                    asteroid.split()
+                    shot.kill()
+        
         # update the screen
         pygame.display.flip()
 
