@@ -3,6 +3,7 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+import sys
 
 def main():
     pygame.init()
@@ -42,6 +43,12 @@ def main():
         # draw everything
         for drawable in drawables:
             drawable.draw(screen)
+
+        # check for collisions
+        for asteroid in asteroids:
+            if asteroid.collides_with(player):
+                print("Game over!")
+                sys.exit()
 
         # update the screen
         pygame.display.flip()
