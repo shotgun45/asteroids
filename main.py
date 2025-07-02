@@ -77,11 +77,33 @@ def game_loop(screen, clock):
         dt = clock.tick(60) / 1000.0  # seconds
         game_state.game_time += dt
 
+def title_screen(screen):
+    font_title = pygame.font.SysFont("arial", 48, bold=True)
+    font_sub = pygame.font.SysFont("arial", 36)
+    title = font_title.render("A REALLY SKETCHY VERSION OF ASTEROIDS", True, (255, 255, 255))
+    prompt = font_sub.render("Press SPACE to begin", True, (200, 200, 200))
+    screen.fill((0, 0, 0))
+    screen.blit(title, (SCREEN_WIDTH // 2 - title.get_width() // 2, SCREEN_HEIGHT // 2 - 100))
+    screen.blit(prompt, (SCREEN_WIDTH // 2 - prompt.get_width() // 2, SCREEN_HEIGHT // 2 + 20))
+    pygame.display.flip()
+
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    waiting = False
+
 def main():
     pygame.init()
     is_running = True
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
+
+    title_screen(screen)
 
     while is_running:
         game_over = game_loop(screen, clock)
