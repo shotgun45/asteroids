@@ -2,6 +2,7 @@ import pygame
 import random
 from circleshape import CircleShape
 from constants import ASTEROID_MIN_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT
+import game_state
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
@@ -32,7 +33,15 @@ class Asteroid(CircleShape):
         elif self.position.y > SCREEN_HEIGHT + self.radius:
             self.position.y = -self.radius
 
+        # calculate score based on radius
     def split(self):
+        if self.radius > ASTEROID_MIN_RADIUS * 2:
+            game_state.score += 10
+        elif self.radius > ASTEROID_MIN_RADIUS:
+            game_state.score += 20
+        else:
+            game_state.score += 50
+
         self.kill()
         if self.radius <= ASTEROID_MIN_RADIUS:
             return

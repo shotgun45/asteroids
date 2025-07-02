@@ -4,7 +4,7 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
-import sys
+import game_state
 
 def game_loop(screen, clock):
     dt = 0
@@ -28,6 +28,8 @@ def game_loop(screen, clock):
 
     # create asteroid field
     asteroid_field = AsteroidField()
+
+    font = pygame.font.SysFont(None, 36)
 
     while True:
         for event in pygame.event.get():
@@ -59,6 +61,10 @@ def game_loop(screen, clock):
                 if asteroid.collides_with(shot):
                     asteroid.split()
                     shot.kill()
+
+        # display the score
+        score_text = font.render(f"Score: {game_state.score}", True, (255, 255, 255))
+        screen.blit(score_text, (10, 10))
 
         # update the screen
         pygame.display.flip()
