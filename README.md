@@ -1,2 +1,3 @@
 # asteroids
-Repo for working on the Boot.dev asteroids app
+
+Build Asteroids Using Python and Pygame on Boot.dev
