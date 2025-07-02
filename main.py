@@ -78,14 +78,55 @@ def game_loop(screen, clock):
         game_state.game_time += dt
 
 def title_screen(screen):
+    import random
+    from asteroid import Asteroid
+
     font_title = pygame.font.SysFont("arial", 48, bold=True)
     font_sub = pygame.font.SysFont("arial", 36)
     title = font_title.render("A REALLY SKETCHY VERSION OF ASTEROIDS", True, (255, 255, 255))
-    prompt = font_sub.render("Press SPACE to begin", True, (200, 200, 200))
-    screen.fill((0, 0, 0))
-    screen.blit(title, (SCREEN_WIDTH // 2 - title.get_width() // 2, SCREEN_HEIGHT // 2 - 100))
-    screen.blit(prompt, (SCREEN_WIDTH // 2 - prompt.get_width() // 2, SCREEN_HEIGHT // 2 + 20))
-    pygame.display.flip()
+    prompt = font_sub.render("Press SPACE to begin or Q to quit", True, (200, 200, 200))
+
+    # Create demo asteroids for the title screen
+    demo_asteroids = []
+    for _ in range(8):
+        x = random.uniform(0, SCREEN_WIDTH)
+        y = random.uniform(0, SCREEN_HEIGHT)
+        radius = random.choice([20, 30, 40])
+        asteroid = Asteroid(x, y, radius)
+        angle = random.uniform(0, 360)
+        speed = random.uniform(30, 80)
+        asteroid.velocity = pygame.Vector2(speed, 0).rotate(angle)
+        demo_asteroids.append(asteroid)
+
+    clock = pygame.time.Clock()
+    waiting = True
+    while waiting:
+        dt = clock.tick(60) / 1000.0  # seconds
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    waiting = False
+                elif event.key == pygame.K_q:
+                    pygame.quit()
+                    exit()
+
+        # Update demo asteroids
+        for asteroid in demo_asteroids:
+            asteroid.update(dt)
+
+        # Draw background and asteroids
+        screen.fill((0, 0, 0))
+        for asteroid in demo_asteroids:
+            asteroid.draw(screen)
+
+        # Draw title and prompt
+        screen.blit(title, (SCREEN_WIDTH // 2 - title.get_width() // 2, SCREEN_HEIGHT // 2 - 100))
+        screen.blit(prompt, (SCREEN_WIDTH // 2 - prompt.get_width() // 2, SCREEN_HEIGHT // 2 + 20))
+        pygame.display.flip()
 
     waiting = True
     while waiting:
@@ -96,6 +137,9 @@ def title_screen(screen):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     waiting = False
+                elif event.key == pygame.K_q:
+                    pygame.quit()
+                    exit()
 
 def main():
     pygame.init()

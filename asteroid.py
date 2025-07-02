@@ -1,4 +1,5 @@
 import pygame
+import math
 import random
 from circleshape import CircleShape
 from constants import ASTEROID_MIN_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT
@@ -16,8 +17,20 @@ class Asteroid(CircleShape):
         else:
             self.color = (255, 0, 0)  # Red for small
 
+        # Generate lumpy shape points
+        self.lump_count = random.randint(8, 14)
+        self.lump_offsets = [random.uniform(0.7, 1.3) for _ in range(self.lump_count)]
+
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, self.position, self.radius, 2)
+        # Draw as a lumpy polygon
+        points = []
+        for i in range(self.lump_count):
+            angle = 2 * math.pi * i / self.lump_count
+            lump_radius = self.radius * self.lump_offsets[i]
+            x = self.position.x + lump_radius * math.cos(angle)
+            y = self.position.y + lump_radius * math.sin(angle)
+            points.append((x, y))
+        pygame.draw.polygon(screen, self.color, points, 2)
 
     def update(self, dt):
         self.position += self.velocity * dt
@@ -33,7 +46,7 @@ class Asteroid(CircleShape):
         elif self.position.y > SCREEN_HEIGHT + self.radius:
             self.position.y = -self.radius
 
-        # calculate score based on radius
+    # calculate score based on radius
     def split(self):
         if self.radius > ASTEROID_MIN_RADIUS * 2:
             game_state.score += 10
