@@ -66,11 +66,16 @@ def game_loop(screen, clock):
         score_text = font.render(f"Score: {game_state.score}", True, (255, 255, 255))
         screen.blit(score_text, (10, 10))
 
+        # display the timer
+        timer_text = font.render(f"Time: {int(game_state.game_time)}s", True, (255, 255, 255))
+        screen.blit(timer_text, (10, 40))
+
         # update the screen
         pygame.display.flip()
 
         # limit frame rate to 60 FPS
-        dt = clock.tick(60) / 1000.0
+        dt = clock.tick(60) / 1000.0  # seconds
+        game_state.game_time += dt
 
 def main():
     pygame.init()
@@ -85,12 +90,23 @@ def main():
             break
 
         # show game over message
-        font = pygame.font.SysFont(None, 48)
+        font = pygame.font.SysFont("arial", 48, bold=True)
         message1 = font.render("Game Over!", True, (255, 0, 0))
         message2 = font.render("Press R to restart or Q to quit.", True, (255, 0, 0))
+        score_text = font.render(f"Final Score: {game_state.score}", True, (255, 255, 255))
+        timer_text = font.render(f"Time Survived: {int(game_state.game_time)}s", True, (255, 255, 255))
         screen.fill((0, 0, 0))
-        screen.blit(message1, (SCREEN_WIDTH // 2 - message1.get_width() // 2, SCREEN_HEIGHT // 2 - message1.get_height()))
-        screen.blit(message2, (SCREEN_WIDTH // 2 - message2.get_width() // 2, SCREEN_HEIGHT // 2 + 10))
+
+        # Stack all messages vertically, centered
+        elements = [score_text, timer_text, message1, message2]
+        total_height = sum(e.get_height() for e in elements) + 30  # 10px spacing between lines
+        start_y = (SCREEN_HEIGHT - total_height) // 2
+
+        y = start_y
+        for i, e in enumerate(elements):
+            screen.blit(e, (SCREEN_WIDTH // 2 - e.get_width() // 2, y))
+            y += e.get_height() + 10  # 10px vertical spacing
+
         pygame.display.flip()
 
         waiting = True
