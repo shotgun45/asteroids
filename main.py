@@ -86,9 +86,11 @@ def main():
 
         # show game over message
         font = pygame.font.SysFont(None, 48)
-        message = font.render("Game Over! Press R to restart or Q to quit.", True, (255, 0, 0))
+        message1 = font.render("Game Over!", True, (255, 0, 0))
+        message2 = font.render("Press R to restart or Q to quit.", True, (255, 0, 0))
         screen.fill((0, 0, 0))
-        screen.blit(message, (SCREEN_WIDTH // 2 - message.get_width() // 2, SCREEN_HEIGHT // 2))
+        screen.blit(message1, (SCREEN_WIDTH // 2 - message1.get_width() // 2, SCREEN_HEIGHT // 2 - message1.get_height()))
+        screen.blit(message2, (SCREEN_WIDTH // 2 - message2.get_width() // 2, SCREEN_HEIGHT // 2 + 10))
         pygame.display.flip()
 
         waiting = True
