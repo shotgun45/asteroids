@@ -3,6 +3,7 @@ import math
 import random
 from circleshape import CircleShape
 from constants import ASTEROID_MIN_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT
+from particle import Particle
 import game_state
 
 class Asteroid(CircleShape):
@@ -48,6 +49,9 @@ class Asteroid(CircleShape):
 
     # calculate score based on radius
     def split(self):
+        # Explosion effect
+        for _ in range(20):
+            game_state.explosion_particles.append(Particle(self.position, self.color))
         if self.radius > ASTEROID_MIN_RADIUS * 2:
             game_state.score += 10
         elif self.radius > ASTEROID_MIN_RADIUS:

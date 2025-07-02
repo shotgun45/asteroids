@@ -70,6 +70,14 @@ def game_loop(screen, clock):
         timer_text = font.render(f"Time: {int(game_state.game_time)}s", True, (255, 255, 255))
         screen.blit(timer_text, (10, 40))
 
+        # update and draw explosion particles
+        for particle in game_state.explosion_particles[:]:
+            particle.update(dt)
+            if particle.lifetime <= 0:
+                game_state.explosion_particles.remove(particle)
+            else:
+                particle.draw(screen)
+
         # update the screen
         pygame.display.flip()
 
