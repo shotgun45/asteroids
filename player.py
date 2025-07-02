@@ -43,6 +43,18 @@ class Player(CircleShape):
 
         self.shoot_timer -= dt
 
+        # Allow the player to wrap around the screen
+        from constants import SCREEN_WIDTH, SCREEN_HEIGHT
+        if self.position.x < -self.radius:
+            self.position.x = SCREEN_WIDTH + self.radius
+        elif self.position.x > SCREEN_WIDTH + self.radius:
+            self.position.x = -self.radius
+
+        if self.position.y < -self.radius:
+            self.position.y = SCREEN_HEIGHT + self.radius
+        elif self.position.y > SCREEN_HEIGHT + self.radius:
+            self.position.y = -self.radius
+
     def shoot(self):
         if self.shoot_timer <= 0 :
             shot = Shot(self.position.x, self.position.y)
