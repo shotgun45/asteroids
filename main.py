@@ -145,6 +145,9 @@ def main():
     title_screen(screen)
 
     while is_running:
+        # Reset game state for new game (score and particles)
+        game_state.score = 0
+        game_state.explosion_particles.clear()
         game_over = game_loop(screen, clock)
         if not game_over:
             is_running = False  # user closed the window
@@ -178,6 +181,7 @@ def main():
                     is_running = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
+                        game_state.game_time = 0.0
                         waiting = False  # restart game loop
                     elif event.key == pygame.K_q:
                         waiting = False
