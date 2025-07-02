@@ -136,19 +136,6 @@ def title_screen(screen):
         screen.blit(prompt, (SCREEN_WIDTH // 2 - prompt.get_width() // 2, SCREEN_HEIGHT // 2 + 20))
         pygame.display.flip()
 
-    waiting = True
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    waiting = False
-                elif event.key == pygame.K_q:
-                    pygame.quit()
-                    exit()
-
 def main():
     pygame.init()
     is_running = True
